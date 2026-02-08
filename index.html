@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+  <script src="https://unpkg.com/aframe-physics-system@1.5.0/dist/aframe-physics-system.min.js"></script>
+  <style>
+    .a-enter-vr-button {
+      display: none !important;
+    }
+
+    .coord-frame {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      width: 400px;
+      height: 100px;
+      background-color: #4c1d8b;
+      border: 2px solid #b065de;
+      border-radius: 8px;
+      z-index: 1000;
+      padding: 15px;
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 16px;
+      pointer-events: none;
+    }
+
+    .coord-frame div {
+      margin-bottom: 8px;
+    }
+
+    .coord-label {
+      color: #f832a4;
+      font-weight: bold;
+    }
+
+    .panorama-switcher {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      flex-wrap: nowrap;
+      justify-content: center;
+      max-width: 95%;
+      z-index: 1000;
+      padding: 12px 20px;
+      background-color: rgba(76, 29, 139, 0.9);
+      border-radius: 10px;
+      border: 2px solid #b065de;
+      overflow-x: auto;
+    }
+
+    .panorama-btn {
+      padding: 10px 15px;
+      background-color: #6c2eb9;
+      color: white;
+      border: 2px solid #b065de;
+      border-radius: 5px;
+      cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      transition: all 0.3s;
+      white-space: nowrap;
+    }
+
+    .panorama-btn:hover {
+      background-color: #8a3fdb;
+      transform: scale(1.05);
+    }
+
+    .panorama-btn.active {
+      background-color: #f832a4;
+      border-color: #f832a4;
+    }
+
+    .panorama-btn[data-room="museum"] {
+      display: none;
+    }
+
+    body[data-active-room="museum"] .panorama-btn[data-room="museum"] {
+      display: inline-block;
+    }
+
+    body[data-active-room="museum"] .panorama-btn[data-room="reception"] {
+      display: none;
+    }
+
+    body[data-active-room="reception"] .panorama-btn[data-room="reception"] {
+      display: inline-block;
+    }
+
+    body[data-active-room="reception"] .panorama-btn[data-room="museum"] {
+      display: none;
+    }
+
+    .logo {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 150px;
+      height: auto;
+      z-index: 1000;
+      opacity: 0.9;
+      background-color: rgba(255, 255, 255, 0.6);
+      border-radius: 10px;
+      padding: 10px;
+    }
+
+    .room-switcher {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1000;
+      background-color: rgba(76, 29, 139, 0.9);
+      border-radius: 10px;
+      border: 2px solid #b065de;
+      padding: 10px;
+      display: flex;
+      gap: 8px;
+    }
+
+    .room-btn {
+      padding: 10px 20px;
+      background-color: #6c2eb9;
+      color: white;
+      border: 2px solid #b065de;
+      border-radius: 5px;
+      cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.3s;
+      white-space: nowrap;
+    }
+
+    .room-btn:hover {
+      background-color: #8a3fdb;
+      transform: scale(1.05);
+    }
+
+    .room-btn.active {
+      background-color: #f832a4;
+      border-color: #f832a4;
+    }
+  </style>
+</head>
+
+<body data-active-room="reception">
+  <!-- <div id="coordFrame" class="coord-frame">
+    <div><span class="coord-label">X:&nbsp;&nbsp;</span> <span id="xCoord">--</span></div>
+    <div><span class="coord-label">Y:&nbsp;&nbsp;</span> <span id="yCoord">--</span></div>
+    <div><span class="coord-label">Z:&nbsp;&nbsp;</span> <span id="zCoord">--</span></div>
+    <div><span class="coord-label">Camera Rotation:&nbsp;&nbsp;</span> <span id="cameraRotation">--°</span></div>
+  </div> -->
+
+  <a-scene physics vr-mode-ui="enabled: false">
+    <a-assets>
+      <img id="panorama1" crossorigin="anonymous" src="./assets/panoramas/reception/IMG_20180423_115611.JPG" />
+      <img id="panorama2" crossorigin="anonymous" src="./assets/panoramas/reception/IMG_20180423_123519.JPG" />
+      <img id="panorama3" crossorigin="anonymous" src="./assets/panoramas/reception/IMG_20180423_123635.JPG" />
+      <img id="panorama4" crossorigin="anonymous" src="./assets/panoramas/reception/IMG_20180423_123900.JPG" />
+      <img id="panorama5" crossorigin="anonymous" src="./assets/panoramas/reception/IMG_20180423_123944.JPG" />
+      <img id="panorama6" crossorigin="anonymous" src="./assets/panoramas/reception/IMG_20180423_124435.JPG" />
+      <img id="panorama7" crossorigin="anonymous" src="./assets/panoramas/reception/IMG_20180423_124508.JPG" />
+
+      <!-- Non-reception panoramas -->
+      <img id="panorama8" crossorigin="anonymous" src="./assets/panoramas/atlas-left.JPG" />
+      <img id="panorama9" crossorigin="anonymous" src="./assets/panoramas/atlas-right-2.JPG" />
+      <img id="panorama10" crossorigin="anonymous" src="./assets/panoramas/atlas-right.JPG" />
+      <img id="panorama11" crossorigin="anonymous" src="./assets/panoramas/atlas.JPG" />
+      <img id="panorama13" crossorigin="anonymous" src="./assets/panoramas/entrance-inside.JPG" />
+      <img id="panorama14" crossorigin="anonymous" src="./assets/panoramas/IMG_20180423_130801.JPG" />
+      <img id="panorama15" crossorigin="anonymous" src="./assets/panoramas/IMG_20180423_130917.JPG" />
+      <img id="panorama16" crossorigin="anonymous" src="./assets/panoramas/IMG_20180423_130954.JPG" />
+      <img id="panorama17" crossorigin="anonymous" src="./assets/panoramas/IMG_20180423_131041.JPG" />
+      <img id="panorama18" crossorigin="anonymous" src="./assets/panoramas/IMG_20180423_131117.JPG" />
+      <img id="panorama19" crossorigin="anonymous" src="./assets/panoramas/IMG_20180423_131158.JPG" />
+      <img id="panorama20" crossorigin="anonymous" src="./assets/panoramas/IMG_20180423_131357.JPG" />
+      <img id="panorama21" crossorigin="anonymous" src="./assets/panoramas/papanikolaou.JPG" />
+      <img id="panorama22" crossorigin="anonymous" src="./assets/panoramas/right-entrance.JPG" />
+    </a-assets>
+    <a-camera look-controls="reverseMouseDrag: true"></a-camera>
+    <!-- <a-sky src="#panorama1" class="clickable"></a-sky> -->
+    <!-- <a-sky src="#panorama2" class="clickable"></a-sky> -->
+    <!-- <a-sky src="#panorama3" class="clickable"></a-sky> -->
+    <!-- <a-sky src="#panorama4" class="clickable"></a-sky> -->
+    <!-- <a-sky src="#panorama5" class="clickable"></a-sky> -->
+    <!-- <a-sky src="#panorama6" class="clickable"></a-sky> -->
+    <a-sky id="mainSky" src="#panorama1" class="clickable"></a-sky>
+  </a-scene>
+
+  <div class="room-switcher">
+    <button class="room-btn active" data-room="reception">Reception</button>
+    <button class="room-btn" data-room="museum">Medical School</button>
+  </div>
+
+  <div class="panorama-switcher" id="panoramaSwitcher">
+
+    <!-- Reception panoramas -->
+    <button class="panorama-btn active" data-room="reception" data-panorama="panorama1">Entrance</button>
+    <button class="panorama-btn" data-room="reception" data-panorama="panorama2">Banner</button>
+    <button class="panorama-btn" data-room="reception" data-panorama="panorama3">Register & Seal</button>
+
+    <!-- Museum panoramas -->
+    <button class="panorama-btn" data-room="museum" data-panorama="panorama13">Entrance</button>
+    <button class="panorama-btn" data-room="museum" data-panorama="panorama11">Atlas</button>
+    <button class="panorama-btn" data-room="museum" data-panorama="panorama8">Projector</button>
+    <button class="panorama-btn" data-room="museum" data-panorama="panorama19">X-ray Lamp</button>
+    <button class="panorama-btn" data-room="museum" data-panorama="panorama15">Valsamakis Collection</button>
+    <button class="panorama-btn" data-room="museum" data-panorama="panorama21">George Papanikolaou</button>
+
+  </div>
+
+  <img src="./assets/logos/uniche-color (1).png" alt="UniChe Logo" class="logo">
+
+  <script src="script.js"></script>
+</body>
+
+</html>
