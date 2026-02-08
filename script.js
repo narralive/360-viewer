@@ -13,10 +13,12 @@ window.addEventListener('load', function () {
   if (scene.hasLoaded) {
     initClickListener();
     initRoomSwitcher();
+    initHamburgerMenu();
   } else {
     scene.addEventListener('loaded', function () {
       initClickListener();
       initRoomSwitcher();
+      initHamburgerMenu();
     });
   }
 });
@@ -124,6 +126,48 @@ function initRoomSwitcher() {
       this.classList.add('active');
 
       console.log(`Switched to panorama: ${panoramaId}`);
+    });
+  });
+}
+
+// Initialize hamburger menu
+function initHamburgerMenu() {
+  const hamburger = document.getElementById('hamburgerMenu');
+  const mobileMenu = document.getElementById('mobileMenu');
+
+  hamburger.addEventListener('click', function() {
+    this.classList.toggle('active');
+    mobileMenu.classList.toggle('active');
+  });
+
+  // Close menu when a panorama is selected on mobile
+  document.querySelectorAll('#mobilePanoramaButtons .panorama-btn').forEach(button => {
+    button.addEventListener('click', function() {
+      // Small delay to show the selection before closing
+      setTimeout(() => {
+        hamburger.classList.remove('active');
+        mobileMenu.classList.remove('active');
+      }, 300);
+    });
+  });
+
+  // Sync mobile room buttons with main room switcher
+  document.querySelectorAll('#mobileRoomButtons .room-btn').forEach(button => {
+    button.addEventListener('click', function() {
+      const roomName = this.getAttribute('data-room');
+      
+      // Update mobile room buttons
+      document.querySelectorAll('#mobileRoomButtons .room-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      this.classList.add('active');
+      
+      // Also update desktop room buttons
+      document.querySelectorAll('.room-switcher .room-btn').forEach(btn => {
+        if (btn.getAttribute('data-room') === roomName) {
+          btn.click();
+        }
+      });
     });
   });
 }

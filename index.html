@@ -155,10 +155,148 @@
       background-color: #f832a4;
       border-color: #f832a4;
     }
+
+    /* Hamburger Menu */
+    .hamburger-menu {
+      display: none;
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1001;
+      background-color: rgba(76, 29, 139, 0.9);
+      border: 2px solid #b065de;
+      border-radius: 8px;
+      padding: 10px;
+      cursor: pointer;
+      width: 45px;
+      height: 45px;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .hamburger-menu span {
+      display: block;
+      width: 25px;
+      height: 3px;
+      background-color: white;
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+
+    .hamburger-menu.active span:nth-child(1) {
+      transform: rotate(45deg) translate(7px, 7px);
+    }
+
+    .hamburger-menu.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger-menu.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(7px, -7px);
+    }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 80px;
+      left: 20px;
+      right: 20px;
+      max-height: calc(100vh - 120px);
+      overflow-y: auto;
+      z-index: 1000;
+      background-color: rgba(76, 29, 139, 0.95);
+      border: 2px solid #b065de;
+      border-radius: 10px;
+      padding: 20px;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .mobile-menu.active {
+      display: flex;
+    }
+
+    .mobile-menu-section {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .mobile-menu-title {
+      color: #f832a4;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .mobile-menu-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    /* Mobile Styles */
+    @media (max-width: 768px) {
+      .hamburger-menu {
+        display: flex;
+      }
+
+      .room-switcher {
+        display: none;
+      }
+
+      .panorama-switcher {
+        display: none;
+      }
+
+      .logo {
+        top: 20px;
+        right: 20px;
+        width: 100px;
+      }
+    }
   </style>
 </head>
 
 <body data-active-room="reception">
+  <!-- Hamburger Menu Button -->
+  <div class="hamburger-menu" id="hamburgerMenu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-section">
+      <div class="mobile-menu-title">Select Room</div>
+      <div class="mobile-menu-buttons" id="mobileRoomButtons">
+        <button class="room-btn active" data-room="reception">Reception</button>
+        <button class="room-btn" data-room="museum">Medical School</button>
+      </div>
+    </div>
+    <div class="mobile-menu-section">
+      <div class="mobile-menu-title">Select Panorama</div>
+      <div class="mobile-menu-buttons" id="mobilePanoramaButtons">
+        <!-- Reception panoramas -->
+        <button class="panorama-btn active" data-room="reception" data-panorama="panorama1">Entrance</button>
+        <button class="panorama-btn" data-room="reception" data-panorama="panorama2">Banner</button>
+        <button class="panorama-btn" data-room="reception" data-panorama="panorama3">Register & Seal</button>
+
+        <!-- Museum panoramas -->
+        <button class="panorama-btn" data-room="museum" data-panorama="panorama13">Entrance</button>
+        <button class="panorama-btn" data-room="museum" data-panorama="panorama11">Atlas</button>
+        <button class="panorama-btn" data-room="museum" data-panorama="panorama8">Projector</button>
+        <button class="panorama-btn" data-room="museum" data-panorama="panorama19">X-ray Lamp</button>
+        <button class="panorama-btn" data-room="museum" data-panorama="panorama15">Valsamakis Collection</button>
+        <button class="panorama-btn" data-room="museum" data-panorama="panorama21">George Papanikolaou</button>
+      </div>
+    </div>
+  </div>
+
   <!-- <div id="coordFrame" class="coord-frame">
     <div><span class="coord-label">X:&nbsp;&nbsp;</span> <span id="xCoord">--</span></div>
     <div><span class="coord-label">Y:&nbsp;&nbsp;</span> <span id="yCoord">--</span></div>
