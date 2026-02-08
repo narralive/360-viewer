@@ -47,13 +47,19 @@
       gap: 8px;
       flex-wrap: nowrap;
       justify-content: center;
-      max-width: 95%;
+      max-width: 100%;
       z-index: 1000;
       padding: 12px 20px;
       background-color: rgba(76, 29, 139, 0.9);
       border-radius: 10px;
       border: 2px solid #b065de;
-      overflow-x: auto;
+    }
+
+    @media (max-width: 768px) {
+      .panorama-switcher {
+        flex-wrap: wrap;
+        max-width: 95%;
+      }
     }
 
     .panorama-btn {
@@ -102,7 +108,7 @@
 
     .logo {
       position: fixed;
-      bottom: 20px;
+      top: 20px;
       right: 20px;
       width: 150px;
       height: auto;
